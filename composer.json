@@ -1,0 +1,22 @@
+{
+    "name": "tgmedia/php-colouring",
+    "description": "PHP library that allows you to play with colours",
+    "authors": [
+        {
+            "name": "Tim Greenwood",
+            "email": "tim@tgmedia.co.uk"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tgmedia\\PhpColouring\\": "src"
+        }
+    }
+}
