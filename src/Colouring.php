@@ -1,33 +1,63 @@
 <?php
-
 namespace Tgmedia\PhpColouring;
+
+/**
+ * PHP Colour class
+ *
+ * The class allows colour manipulation
+ *
+ * @package    Tgmedia
+ * @subpackage PhpColouring
+ * @author     Tim Greenwood <tim@tgmedia.co.uk>
+ */
 
 class Colouring {
 
 	var $colour;
 
-	function __construct($colour) {
-		$this->colour = preg_replace( '/[^0-9a-f]/i', '', $colour );
+	function __construct($colour)
+	{
+		$this->colour = $this->hex2rgb(preg_replace( '/[^0-9a-f]/i', '', $colour ));
+	}
+
+	private function hex2rgb($colour)
+	{
+		if ( $colour[0] == '#' ) {
+			$colour = substr( $colour, 1 );
+		}
+		if ( strlen( $colour ) == 6 ) {
+			list( $r, $g, $b ) = array( $colour[0] . $colour[1], $colour[2] . $colour[3], $colour[4] . $colour[5] );
+		} elseif ( strlen( $colour ) == 3 ) {
+			list( $r, $g, $b ) = array( $colour[0] . $colour[0], $colour[1] . $colour[1], $colour[2] . $colour[2] );
+		} else {
+			return false;
+		}
+		$r = hexdec( $r );
+		$g = hexdec( $g );
+		$b = hexdec( $b );
+		return array( 'r' => $r, 'g' => $g, 'b' => $b );
+	}
+
+	private function rgb2hex($colour)
+	{
+		return '#' . sprintf('%02x', $colour['r']) . sprintf('%02x', $colour['g']) . sprintf('%02x', $colour['b']);
 	}
 
 	/**
-     * Lightens/darkens a given colour (hex format), returning the altered colour in hex format
-     * @param float $percent Decimal ( 0.2 = lighten by 20%(), -0.4 = darken by 40%() )
-     * @return str colour as hexadecimal (with hash);
+     * Change the luminance of a HEX colour
+     *
+     * @param integer    $percent    Integer number: positive to lighten, negative to darken
+     * @return string  $new_hex
      */
-	public function luminance( $percent ) {
-		$new_hex = '#';
-
-		if ( strlen( $this->colour ) < 6 ) {
-			$this->colour = $this->colour[0] + $this->colour[0] + $this->colour[1] + $this->colour[1] + $this->colour[2] + $this->colour[2];
+	public function luminance( $percent )
+	{
+		$values = [];
+		foreach($this->colour as $index => $colour) {
+			$new = ($colour + ($percent/10 * 25));
+			if ($new > 255) $new = 255;
+			else if ($new < 0) $new = 0;
+			$values[$index] = $new;
 		}
-
-		for ($i = 0; $i < 3; $i++) {
-			$dec = hexdec( substr( $this->colour, $i*2, 2 ) );
-			$dec = min( max( 0, $dec + $dec * $percent ), 255 );
-			$new_hex .= str_pad( dechex( $dec ) , 2, 0, STR_PAD_LEFT );
-		}
-
-		return $new_hex;
+		return $this->rgb2hex($values);
 	}
 }

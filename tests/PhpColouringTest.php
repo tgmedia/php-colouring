@@ -4,10 +4,16 @@ use Tgmedia\PhpColouring\Colouring;
 
 class PhpColouringTest extends PHPUnit_Framework_TestCase {
 	
-	public function testColouring()
+	public function testColouringLighten()
 	{
-		$colouring = new Colouring('#666666');
-		$this->assertTrue($colouring->luminance(0.1) == '#707070');
+		$colouring = new Colouring('#646464');
+		$this->assertTrue($colouring->luminance(20) == '#969696');
+	}
+	
+	public function testColouringDarken()
+	{
+		$colouring = new Colouring('#646464');
+		$this->assertTrue($colouring->luminance(-20) == '#323232');
 	}
 	
 }

@@ -1,6 +1,8 @@
 {
     "name": "tgmedia/php-colouring",
     "description": "PHP library that allows you to play with colours",
+    "license": "DBAD",
+    "keywords": ["php-colouring", "php", "colour"],
     "authors": [
         {
             "name": "Tim Greenwood",
