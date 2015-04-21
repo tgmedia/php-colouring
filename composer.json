@@ -9,7 +9,7 @@
             "email": "tim@tgmedia.co.uk"
         }
     ],
-    "minimum-stability": "1.0.*",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0"
     },
