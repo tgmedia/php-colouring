@@ -9,9 +9,9 @@ use Tgmedia\PhpColouring\Colouring;
 $colouring = new Colouring('#666666');
 
 // darken colour by 40%
-echo $colouring->luminance(-40);
+echo $colouring->darken(40);
 
 // lighten colour by 20%
-echo $colouring->luminance(20);
+echo $colouring->lighten(20);
 ?>
 ```

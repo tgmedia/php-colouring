@@ -13,13 +13,19 @@ namespace Tgmedia\PhpColouring;
 
 class Colouring {
 
-	var $colour;
+	private $colour;
 
 	function __construct($colour)
 	{
 		$this->colour = $this->hex2rgb(preg_replace( '/[^0-9a-f]/i', '', $colour ));
 	}
 
+	/**
+	 * Convert HEX colour to RGB
+	 *
+     * @param string    $colour    Colour as HEX
+     * @return array    RGB colour as array
+	 **/
 	private function hex2rgb($colour)
 	{
 		if ( $colour[0] == '#' ) {
@@ -38,18 +44,23 @@ class Colouring {
 		return array( 'r' => $r, 'g' => $g, 'b' => $b );
 	}
 
+	/**
+	 * Convert RGB colour to HEX
+     * @param array     $colour    RGB colour as array
+     * @return string   RGB colour as HEX
+	 **/
 	private function rgb2hex($colour)
 	{
 		return '#' . sprintf('%02x', $colour['r']) . sprintf('%02x', $colour['g']) . sprintf('%02x', $colour['b']);
 	}
 
 	/**
-     * Change the luminance of a HEX colour
+     * Make the colour lighter
      *
-     * @param integer    $percent    Integer number: positive to lighten, negative to darken
-     * @return string  $new_hex
+     * @param integer    $percent    Percentage to lighten the colour
+     * @return string    $new_hex    Lighter colour as HEX
      */
-	public function luminance( $percent )
+	public function lighten( $percent )
 	{
 		$values = [];
 		foreach($this->colour as $index => $colour) {
@@ -59,5 +70,33 @@ class Colouring {
 			$values[$index] = $new;
 		}
 		return $this->rgb2hex($values);
+	}
+
+	/**
+     * Make the colour darker
+     *
+     * @param integer    $percent    Percentage to darken the colour
+     * @return string    $new_hex    Darker colour as HEX
+     */
+	public function darken( $percent )
+	{
+		$values = [];
+		foreach($this->colour as $index => $colour) {
+			$new = ($colour - ($percent/10 * 25));
+			if ($new > 255) $new = 255;
+			else if ($new < 0) $new = 0;
+			$values[$index] = $new;
+		}
+		return $this->rgb2hex($values);
+	}
+
+	/**
+     * Return the original colour
+     *
+     * @return string  Original colour
+     */
+	public function colour()
+	{
+		return $this->rgb2hex($this->colour);
 	}
 }
